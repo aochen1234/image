@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<!-- Template by Quackit.com -->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>Image World</title>
+    {% load staticfiles %}
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/Pygments.css" %}" rel="stylesheet">
+    <!-- Custom CSS: You can use this stylesheet to override any Bootstrap styles and/or apply your own styles -->
+    <link href="{% static "css/custom.css" %}" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Logo and responsive toggle -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-globe"></span> Logo</a>
+            </div>
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="/image/">Home</a>
+                    </li>
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
+						<ul class="dropdown-menu" aria-labelledby="about-us">
+							<li><a href="#">Information</a></li>
+							<li><a href="#">Setting</a></li>
+						</ul>
+					</li>
+                     <li>
+                        <a href="/logout/">Logout</a>
+                    </li>
+                </ul>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+		<!-- Left Column -->
+		<div class="col-sm-3">
+
+			<!-- List-Group Panel -->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title"><span class="glyphicon glyphicon-random"></span>   Hi  {{ name }}</h1>
+				</div>
+				<div class="list-group">
+					<a href="#" class="list-group-item">Your Like</a>
+					<a href="#" class="list-group-item">Your Poll  ({{ poll_num }})</a>
+					<a href="#" class="list-group-item">Your Comment</a>
+                    <a href="/image/post/" class="list-group-item">Your Post</a>
+				</div>
+			</div>
+		</div><!--/Left Column-->
+  
+    {% block center %}
+		<!-- Center Column -->
+		<div class="col-sm-6">
+			<!-- Articles -->
+            {% for article in latest_list %}
+			<div class="row">
+				<article class="col-xs-12">
+					<div class="media">
+						<div class="media-left">
+							<a href="#">
+								<img class="media-object" src="{{ article.image_url|default_if_none:'#' }}" alt="">
+							</a>
+						</div>
+						<div class="media-body">
+							<h2 class="media-heading"><a href="/image/{{ article.id }}">{{ article.title }}</a></h2>
+                            <div class="con">
+							<p >{{ article.content | linebreaks }}</p>
+                            </div>
+						    <p class="pull-right"><span class="label label-default">Column: {{ article.column }}</span><span class="label label-default">Author: {{ article.author }}</span></p>
+						    <ul class="list-inline">
+                                <li><a href="#">{{ article.pub_date | date:"j M" }}</a></li>
+                                <li><a href="/image/{{ article.id }}/poll/"><span class="glyphicon glyphicon-thumbs-up"></span>Poll:{{ article.poll_num }}</a></li>
+                                <li><a href="/image/{{ article.id }}/keep/"><span class="glyphicon glyphicon-star-empty"></span>Keep:{{ article.keep_num }}</a></li>
+						        <li><a href="#"><span class="glyphicon glyphicon-comment"></span>Comment:{{ article.comment_num }}</a></li>
+                            </ul>
+						</div>
+					</div>
+				</article>
+			</div>
+            <hr>
+            {% endfor %}]
+		</div><!--/Center Column-->
+
+	 <div class="col-sm-3">
+
+			<!-- Search -->
+			<form class="form-inline search" role="search" method="get" action="/image/search/">
+				<div class="form-group">
+					<input type="text" class="form-control" name="q">
+				</div>
+				<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Search</button>
+			</form>
+
+			<!-- Progress Bars -->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span class="glyphicon glyphicon-scale"></span>
+						Active User
+					</h3>
+				</div>
+                {% for user in user_list %}
+				<div class="panel-body">
+					<div class="progress">
+                        <ul>
+                            <li>{{ user }}</li>
+                        </ul>
+					</div>
+				</div>
+            {% endfor %}
+            {% endblock %}
+    <!-- jQuery -->
+    <script src="{% static "js/jquery-1.11.3.min.js" %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+	
+	<!-- IE10 viewport bug workaround -->
+	<script src="{% static "js/ie10-viewport-bug-workaround.js" %}"></script>
+	
+	<!-- Placeholder Images -->
+	<script src="{% static "js/holder.min.js" %}"></script>
+</body>
+</html>
